@@ -8,22 +8,18 @@
     <title>My Blog</title>
 </head>
 <body>
-    <article>
-        <h1><a href="/posts/my-first-post">First Post</a></h1>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore non, aliquid et debitis consectetur possimus ducimus dolorum quaerat nam animi porro veritatis aut eum ipsa. Iusto eum illum deleniti atque?
-        </p>
-    </article>
-    <article>
-    <h1><a href="/posts/my-second-post">second Post</a></h1>        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore non, aliquid et debitis consectetur possimus ducimus dolorum quaerat nam animi porro veritatis aut eum ipsa. Iusto eum illum deleniti atque?
-        </p>
-    </article>
-    <article> 
-        <h1><a href="/posts/my-third-post">third Post</a></h1>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore non, aliquid et debitis consectetur possimus ducimus dolorum quaerat nam animi porro veritatis aut eum ipsa. Iusto eum illum deleniti atque?
-        </p>
-    </article>
+
+    <?php foreach ($posts as $post) : ?>
+        <article>
+            <h1>
+                <a href="/posts/<?= $post->slug; ?>">
+                    <?= $post->title; ?>
+                </a>
+            </h1>
+            <div>
+             <?= $post->excerpt?>
+            </div>
+        </article>
+    <?php endforeach; ?>
 </body>
 </html>
