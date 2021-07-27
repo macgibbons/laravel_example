@@ -14,7 +14,7 @@ class Post
     public $excerpt;
 
     public $date;
-    
+
     public $body;
 
     public $slug;
@@ -23,29 +23,35 @@ class Post
     {
         $this->title = $title;
         $this->excerpt = $excerpt;
-        $this->date= $date;
+        $this->date = $date;
         $this->body = $body;
         $this->slug = $slug;
     }
 
-    public static function all() 
+    public static function all()
     {
-        return collect(File::files(resource_path("posts")))
-            ->map(function ($file) {
-                $document = YamlFrontMatter::parseFile($file);
+        return cache()->rememberForever('posts.all', function () {
+            return collect(File::files(resource_path("posts")))
+                ->map(function ($file) {
+                    $document = YamlFrontMatter::parseFile($file);
 
-                return new Post(
-                    $document->title,
-                    $document->excerpt,
-                    $document->date,
-                    $document->body(),
-                    $document->slug
-                );
-            });
+                    return new Post(
+                        $document->title,
+                        $document->excerpt,
+                        $document->date,
+                        $document->body(),
+                        $document->slug
+                    );
+                })
+                ->sortByDesc('date');
+        });
     }
-    public static function find($slug) 
+    public static function find($slug)
     {
-        $posts = static::all();
-        return $posts->firstWhere('slug', $slug);
+        $post = static::all()->firstWhere('slug', $slug);
+        if (!$post) {
+            throw new ModelNotFoundException();
+        }
+        return $post;
     }
 }
