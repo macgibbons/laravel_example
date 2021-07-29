@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Faker\Provider\Lorem;
@@ -34,5 +35,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Post::factory(10)->create();
+
+        Comment::factory(10)->create([
+            'post_id' => 1
+        ]);
     }
 }
